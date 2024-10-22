@@ -1,28 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do to List App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Menu Interativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .menu-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .menu-item .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover .icon {
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .menu-container {
+                padding: 1rem;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.2s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        /* ... continue for all items */
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="todo-app">
-            <h2>To-Do List <img src="images/icon.png" alt=""></h2>
-            <div class="row">
-                <input type="text" id="input-box" placeholder="Add your text">
-                <button onclick="(addTask())">Add</button> 
-            </div>
-            <ul id="list-container">
-                <!--
-                    <li class="checked">Task 01</li>
-                    <li>Task 02</li>
-                    <li>Task 03</li>
-                -->
-            </ul>
-        </div>  
+    <div class="menu-container">
+        <div class="menu-item">
+            <div class="icon">🏠</div>
+            <h3>Página Inicial</h3>
+            <p>Volte para o início</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">👤</div>
+            <h3>Perfil</h3>
+            <p>Gerencie suas informações</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📱</div>
+            <h3>Aplicativos</h3>
+            <p>Acesse seus apps</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">⚙️</div>
+            <h3>Configurações</h3>
+            <p>Personalize sua experiência</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📊</div>
+            <h3>Relatórios</h3>
+            <p>Visualize estatísticas</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📝</div>
+            <h3>Documentos</h3>
+            <p>Gerencie seus arquivos</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📅</div>
+            <h3>Agenda</h3>
+            <p>Organize seus compromissos</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📨</div>
+            <h3>Mensagens</h3>
+            <p>Acesse sua caixa de entrada</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🎯</div>
+            <h3>Metas</h3>
+            <p>Defina seus objetivos</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📈</div>
+            <h3>Desempenho</h3>
+            <p>Acompanhe seu progresso</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🔍</div>
+            <h3>Pesquisa</h3>
+            <p>Encontre o que precisa</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📢</div>
+            <h3>Notificações</h3>
+            <p>Fique por dentro das novidades</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🛒</div>
+            <h3>Compras</h3>
+            <p>Faça seus pedidos</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">💳</div>
+            <h3>Pagamentos</h3>
+            <p>Gerencie suas finanças</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🎮</div>
+            <h3>Jogos</h3>
+            <p>Divirta-se</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📚</div>
+            <h3>Biblioteca</h3>
+            <p>Acesse seu conteúdo</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🎵</div>
+            <h3>Música</h3>
+            <p>Ouça suas playlists</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🎬</div>
+            <h3>Vídeos</h3>
+            <p>Assista ao conteúdo</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📷</div>
+            <h3>Fotos</h3>
+            <p>Gerencie suas imagens</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🗂️</div>
+            <h3>Categorias</h3>
+            <p>Organize seu conteúdo</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🔒</div>
+            <h3>Segurança</h3>
+            <p>Proteja suas informações</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">👥</div>
+            <h3>Grupos</h3>
+            <p>Gerencie suas equipes</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📑</div>
+            <h3>Projetos</h3>
+            <p>Acompanhe suas atividades</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🔔</div>
+            <h3>Alertas</h3>
+            <p>Receba atualizações</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📊</div>
+            <h3>Analytics</h3>
+            <p>Análise de dados</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🎨</div>
+            <h3>Temas</h3>
+            <p>Personalize a aparência</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">💬</div>
+            <h3>Chat</h3>
+            <p>Converse em tempo real</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">📞</div>
+            <h3>Suporte</h3>
+            <p>Obtenha ajuda</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">🚪</div>
+            <h3>Sair</h3>
+            <p>Encerre sua sessão</p>
+        </div>
+        <div class="menu-item">
+            <div class="icon">❓</div>
+            <h3>Ajuda</h3>
+            <p>Tire suas dúvidas</p>
+        </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
