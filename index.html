@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projetos</title>
+    <title>Calculadora de Moedas - Pixel Art</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,276 +14,358 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #312e81;
+            font-family: 'Press Start 2P', cursive;
+            color: #fde047;
+            line-height: 1.6;
+            padding: 20px;
         }
 
-        .menu-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            width: 90%;
+        .container {
             max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e1b4b;
+            border: 4px solid #4338ca;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 0px #000;
+        }
+
+        .calculator-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
-        .menu-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 15px;
+        @media (min-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: #1e1b4b;
+            border: 4px solid #4338ca;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .card-title {
+            color: #fde047;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .input-group {
+            background-color: #312e81;
+            border: 2px solid #4338ca;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .input-label {
+            display: block;
+            color: #4ade80;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .range-input {
+            width: 100%;
+            height: 20px;
+            background: #4338ca;
+            outline: none;
+            -webkit-appearance: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4ade80;
+            border: 2px solid #166534;
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .result-box {
+            background-color: #312e81;
+            border: 2px solid #4338ca;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .result-label {
+            color: #4ade80;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            color: #fde047;
+            font-size: 16px;
+        }
+
+        #chart {
+            width: 100%;
+            height: 300px;
+            background-color: #312e81;
+            border: 2px solid #4338ca;
+            padding: 15px;
+            border-radius: 4px;
             position: relative;
-            overflow: hidden;
         }
 
-        .menu-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .pixel-border {
+            position: relative;
         }
 
-        .menu-item::before {
+        .pixel-border::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, #4338ca, #312e81);
+            z-index: -1;
+            border-radius: 12px;
         }
 
-        .menu-item:hover::before {
-            left: 100%;
+        .coin-icon {
+            font-size: 24px;
+            margin-right: 10px;
         }
-
-        .menu-item h3 {
-            color: white;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .menu-item p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-
-        .menu-item .icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: white;
-            transition: transform 0.3s ease;
-        }
-
-        .menu-item:hover .icon {
-            transform: scale(1.02);
-        }
-
-        @media (max-width: 768px) {
-            .menu-container {
-                padding: 1rem;
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .menu-item {
-            animation: fadeIn 0.5s ease forwards;
-            opacity: 0;
-        }
-
-        .menu-item:nth-child(1) { animation-delay: 0.1s; }
-        .menu-item:nth-child(2) { animation-delay: 0.2s; }
-        .menu-item:nth-child(3) { animation-delay: 0.3s; }
-        /* ... continue for all items */
     </style>
 </head>
 <body>
-    <div class="menu-container">
+    <div class="container">
+        <div class="title">
+            <span class="coin-icon">🎮</span>
+            CALCULADORA DE MOEDAS
+            <div style="font-size: 14px; margin-top: 10px; color: #4ade80">
+                ✨ SIMULE SUA FORTUNA ✨
+            </div>
+        </div>
 
-        <a href="Projeto 01/index.html" style="text-decoration:none;">
-        <div class="menu-item">
-            <div class="icon">🏠</div>
-            <h3>App Weather</h3>
-            <p>Aplicativo de Tempo</p>
-        </div>
-        </a>
+        <div class="calculator-grid">
+            <div class="card">
+                <h2 class="card-title">CONFIGURE SUA MISSÃO</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">MOEDAS INICIAIS</label>
+                    <div id="principalValue">R$ 1.000,00</div>
+                    <input type="range" id="principal" class="range-input" 
+                           min="0" max="100000" step="1000" value="1000">
+                </div>
 
-        
-         <a href="Projeto 02/index.html" style="text-decoration:none;">
-        <div class="menu-item">
-            <div class="icon">👤</div>
-            <h3>To Do List</h3>
-            <p>Aplicativo de Listas</p>
+                <div class="input-group">
+                    <label class="input-label">MOEDAS MENSAIS</label>
+                    <div id="monthlyValue">R$ 100,00</div>
+                    <input type="range" id="monthly" class="range-input"
+                           min="0" max="10000" step="100" value="100">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">PODER DE MULTIPLICAÇÃO</label>
+                    <div id="interestValue">6%</div>
+                    <input type="range" id="interest" class="range-input"
+                           min="0" max="20" step="0.5" value="6">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ANOS DE JORNADA</label>
+                    <div id="yearsValue">10 anos</div>
+                    <input type="range" id="years" class="range-input"
+                           min="1" max="30" step="1" value="10">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">TESOURO ACUMULADO</h2>
+                
+                <div class="result-box">
+                    <div class="result-label">TESOURO FINAL</div>
+                    <div id="finalBalance" class="result-value">R$ 0,00</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="result-box">
+                        <div class="result-label">MOEDAS INVESTIDAS</div>
+                        <div id="totalInvested" class="result-value">R$ 0,00</div>
+                    </div>
+
+                    <div class="result-box">
+                        <div class="result-label">BÔNUS MÁGICO</div>
+                        <div id="totalInterest" class="result-value">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div id="chart"></div>
+            </div>
         </div>
-        </a>
-        <!--
-             
-        <div class="menu-item">
-            <div class="icon">📱</div>
-            <h3>Aplicativos</h3>
-            <p>Acesse seus apps</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">⚙️</div>
-            <h3>Configurações</h3>
-            <p>Personalize sua experiência</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📊</div>
-            <h3>Relatórios</h3>
-            <p>Visualize estatísticas</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📝</div>
-            <h3>Documentos</h3>
-            <p>Gerencie seus arquivos</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📅</div>
-            <h3>Agenda</h3>
-            <p>Organize seus compromissos</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📨</div>
-            <h3>Mensagens</h3>
-            <p>Acesse sua caixa de entrada</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🎯</div>
-            <h3>Metas</h3>
-            <p>Defina seus objetivos</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📈</div>
-            <h3>Desempenho</h3>
-            <p>Acompanhe seu progresso</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🔍</div>
-            <h3>Pesquisa</h3>
-            <p>Encontre o que precisa</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📢</div>
-            <h3>Notificações</h3>
-            <p>Fique por dentro das novidades</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🛒</div>
-            <h3>Compras</h3>
-            <p>Faça seus pedidos</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">💳</div>
-            <h3>Pagamentos</h3>
-            <p>Gerencie suas finanças</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🎮</div>
-            <h3>Jogos</h3>
-            <p>Divirta-se</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📚</div>
-            <h3>Biblioteca</h3>
-            <p>Acesse seu conteúdo</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🎵</div>
-            <h3>Música</h3>
-            <p>Ouça suas playlists</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🎬</div>
-            <h3>Vídeos</h3>
-            <p>Assista ao conteúdo</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📷</div>
-            <h3>Fotos</h3>
-            <p>Gerencie suas imagens</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🗂️</div>
-            <h3>Categorias</h3>
-            <p>Organize seu conteúdo</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🔒</div>
-            <h3>Segurança</h3>
-            <p>Proteja suas informações</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">👥</div>
-            <h3>Grupos</h3>
-            <p>Gerencie suas equipes</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📑</div>
-            <h3>Projetos</h3>
-            <p>Acompanhe suas atividades</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🔔</div>
-            <h3>Alertas</h3>
-            <p>Receba atualizações</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📊</div>
-            <h3>Analytics</h3>
-            <p>Análise de dados</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🎨</div>
-            <h3>Temas</h3>
-            <p>Personalize a aparência</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">💬</div>
-            <h3>Chat</h3>
-            <p>Converse em tempo real</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">📞</div>
-            <h3>Suporte</h3>
-            <p>Obtenha ajuda</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">🚪</div>
-            <h3>Sair</h3>
-            <p>Encerre sua sessão</p>
-        </div>
-        <div class="menu-item">
-            <div class="icon">❓</div>
-            <h3>Ajuda</h3>
-            <p>Tire suas dúvidas</p>
-        </div>
-        -->
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        let chart;
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        function calculateResults() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const monthly = parseFloat(document.getElementById('monthly').value);
+            const interest = parseFloat(document.getElementById('interest').value);
+            const years = parseInt(document.getElementById('years').value);
+
+            let balance = principal;
+            const monthlyRate = interest / 12 / 100;
+            const totalMonths = years * 12;
+            const data = [];
+            let invested = principal;
+
+            for (let month = 0; month <= totalMonths; month++) {
+                if (month > 0) {
+                    balance = (balance + monthly) * (1 + monthlyRate);
+                    invested += monthly;
+                }
+                
+                if (month % 12 === 0) {
+                    data.push({
+                        year: month / 12,
+                        balance: Math.round(balance),
+                        invested: Math.round(invested)
+                    });
+                }
+            }
+
+            // Atualizar resultados
+            document.getElementById('finalBalance').textContent = formatCurrency(balance);
+            document.getElementById('totalInvested').textContent = formatCurrency(invested);
+            document.getElementById('totalInterest').textContent = formatCurrency(balance - invested);
+
+            // Atualizar gráfico
+            updateChart(data);
+        }
+
+        function updateChart(data) {
+            const ctx = document.getElementById('chart');
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => `Ano ${d.year}`),
+                    datasets: [
+                        {
+                            label: 'Tesouro Total',
+                            data: data.map(d => d.balance),
+                            borderColor: '#fde047',
+                            backgroundColor: '#fde04733',
+                            borderWidth: 2,
+                            stepped: true
+                        },
+                        {
+                            label: 'Total Investido',
+                            data: data.map(d => d.invested),
+                            borderColor: '#4ade80',
+                            backgroundColor: '#4ade8033',
+                            borderWidth: 2,
+                            stepped: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#fde047',
+                                font: {
+                                    family: "'Press Start 2P', cursive",
+                                    size: 10
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                },
+                                color: '#fde047',
+                                font: {
+                                    family: "'Press Start 2P', cursive",
+                                    size: 8
+                                }
+                            },
+                            grid: {
+                                color: '#4338ca55'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#fde047',
+                                font: {
+                                    family: "'Press Start 2P', cursive",
+                                    size: 8
+                                }
+                            },
+                            grid: {
+                                color: '#4338ca55'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Atualizar valores exibidos
+        function updateDisplayValues() {
+            document.getElementById('principalValue').textContent = 
+                formatCurrency(document.getElementById('principal').value);
+            document.getElementById('monthlyValue').textContent = 
+                formatCurrency(document.getElementById('monthly').value);
+            document.getElementById('interestValue').textContent = 
+                document.getElementById('interest').value + '%';
+            document.getElementById('yearsValue').textContent = 
+                document.getElementById('years').value + ' anos';
+        }
+
+        // Event listeners
+        const inputs = ['principal', 'monthly', 'interest', 'years'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                updateDisplayValues();
+                calculateResults();
+            });
+        });
+
+        // Inicializar calculadora
+        updateDisplayValues();
+        calculateResults();
+    </script>
 </body>
 </html>
