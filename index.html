@@ -148,6 +148,21 @@
             font-size: 24px;
             margin-right: 10px;
         }
+        /* ... (todo o CSS anterior permanece igual) ... */
+        #chartContainer {
+            width: 100%;
+            height: 300px;
+            background-color: #312e81;
+            border: 2px solid #4338ca;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
     </style>
 </head>
 <body>
@@ -213,14 +228,16 @@
                     </div>
                 </div>
 
-                <div id="chart"></div>
+                <div id="chartContainer">
+                    <canvas id="myChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script>
-        let chart;
+        let myChart = null;
 
         function formatCurrency(value) {
             return new Intl.NumberFormat('pt-BR', {
@@ -238,7 +255,9 @@
             let balance = principal;
             const monthlyRate = interest / 12 / 100;
             const totalMonths = years * 12;
-            const data = [];
+            const labels = [];
+            const balanceData = [];
+            const investedData = [];
             let invested = principal;
 
             for (let month = 0; month <= totalMonths; month++) {
@@ -248,11 +267,9 @@
                 }
                 
                 if (month % 12 === 0) {
-                    data.push({
-                        year: month / 12,
-                        balance: Math.round(balance),
-                        invested: Math.round(invested)
-                    });
+                    labels.push(`Ano ${month/12}`);
+                    balanceData.push(Math.round(balance));
+                    investedData.push(Math.round(invested));
                 }
             }
 
@@ -261,35 +278,34 @@
             document.getElementById('totalInvested').textContent = formatCurrency(invested);
             document.getElementById('totalInterest').textContent = formatCurrency(balance - invested);
 
-            // Atualizar gráfico
-            updateChart(data);
+            updateChart(labels, balanceData, investedData);
         }
 
-        function updateChart(data) {
-            const ctx = document.getElementById('chart');
+        function updateChart(labels, balanceData, investedData) {
+            const ctx = document.getElementById('myChart').getContext('2d');
 
-            if (chart) {
-                chart.destroy();
+            if (myChart) {
+                myChart.destroy();
             }
 
-            chart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: data.map(d => `Ano ${d.year}`),
+                    labels: labels,
                     datasets: [
                         {
                             label: 'Tesouro Total',
-                            data: data.map(d => d.balance),
+                            data: balanceData,
                             borderColor: '#fde047',
-                            backgroundColor: '#fde04733',
+                            backgroundColor: 'rgba(253, 224, 71, 0.2)',
                             borderWidth: 2,
                             stepped: true
                         },
                         {
                             label: 'Total Investido',
-                            data: data.map(d => d.invested),
+                            data: investedData,
                             borderColor: '#4ade80',
-                            backgroundColor: '#4ade8033',
+                            backgroundColor: 'rgba(74, 222, 128, 0.2)',
                             borderWidth: 2,
                             stepped: true
                         }
@@ -297,6 +313,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'top',
@@ -311,6 +328,7 @@
                     },
                     scales: {
                         y: {
+                            beginAtZero: true,
                             ticks: {
                                 callback: function(value) {
                                     return formatCurrency(value);
@@ -322,7 +340,7 @@
                                 }
                             },
                             grid: {
-                                color: '#4338ca55'
+                                color: 'rgba(67, 56, 202, 0.3)'
                             }
                         },
                         x: {
@@ -334,7 +352,7 @@
                                 }
                             },
                             grid: {
-                                color: '#4338ca55'
+                                color: 'rgba(67, 56, 202, 0.3)'
                             }
                         }
                     }
