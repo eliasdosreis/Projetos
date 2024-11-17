@@ -19,6 +19,7 @@
             color: #fde047;
             line-height: 1.6;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
@@ -34,6 +35,37 @@
             border-radius: 8px;
             margin-bottom: 30px;
             text-shadow: 4px 4px 0px #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(253, 224, 71, 0.2) 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .title div {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #4ade80;
+            animation: pulse 2s infinite;
         }
 
         .calculator-grid {
@@ -54,6 +86,11 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 8px 8px 0px #000;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
         }
 
         .card-title {
@@ -69,6 +106,24 @@
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 4px;
+            position: relative;
+        }
+
+        .input-group::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px dashed rgba(67, 56, 202, 0.5);
+            border-radius: 4px;
+            pointer-events: none;
+            animation: dash 5s linear infinite;
+        }
+
+        @keyframes dash {
+            to { stroke-dashoffset: 1000; }
         }
 
         .input-label {
@@ -97,6 +152,11 @@
             border: 2px solid #166534;
             cursor: pointer;
             border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            background: #a3e635;
         }
 
         .result-box {
@@ -105,6 +165,19 @@
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(67, 56, 202, 0.2) 70%);
+            animation: rotate 15s linear infinite reverse;
         }
 
         .result-label {
@@ -116,39 +189,20 @@
         .result-value {
             color: #fde047;
             font-size: 16px;
-        }
-
-        #chart {
-            width: 100%;
-            height: 300px;
-            background-color: #312e81;
-            border: 2px solid #4338ca;
-            padding: 15px;
-            border-radius: 4px;
             position: relative;
+            z-index: 1;
         }
 
-        .pixel-border {
-            position: relative;
+        .result-value.animate {
+            animation: highlight 0.5s ease-in-out;
         }
 
-        .pixel-border::after {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            background: linear-gradient(45deg, #4338ca, #312e81);
-            z-index: -1;
-            border-radius: 12px;
+        @keyframes highlight {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(253, 224, 71, 0.5); }
+            100% { background-color: transparent; }
         }
 
-        .coin-icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
-        /* ... (todo o CSS anterior permanece igual) ... */
         #chartContainer {
             width: 100%;
             height: 300px;
@@ -157,11 +211,38 @@
             padding: 15px;
             border-radius: 4px;
             margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #chartContainer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(74, 222, 128, 0.1) 70%);
+            animation: rotate 25s linear infinite;
         }
 
         canvas {
             width: 100% !important;
             height: 100% !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        .coin-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            animation: spin 4s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -170,7 +251,7 @@
         <div class="title">
             <span class="coin-icon">🎮</span>
             CALCULADORA DE MOEDAS
-            <div style="font-size: 14px; margin-top: 10px; color: #4ade80">
+            <div>
                 ✨ SIMULE SUA FORTUNA ✨
             </div>
         </div>
@@ -278,6 +359,14 @@
             document.getElementById('totalInvested').textContent = formatCurrency(invested);
             document.getElementById('totalInterest').textContent = formatCurrency(balance - invested);
 
+            // Adicionar animação aos valores
+            const resultElements = document.querySelectorAll('.result-value');
+            resultElements.forEach(element => {
+                element.classList.remove('animate');
+                void element.offsetWidth; // Reflow para reiniciar a animação
+                element.classList.add('animate');
+            });
+
             updateChart(labels, balanceData, investedData);
         }
 
@@ -314,6 +403,10 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutBounce'
+                    },
                     plugins: {
                         legend: {
                             position: 'top',
