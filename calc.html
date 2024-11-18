@@ -2,491 +2,210 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Moedas - Pixel Art</title>
+    <title>Simulador de Orçamento Pixel Art</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: #312e81;
-            font-family: 'Press Start 2P', cursive;
-            color: #fde047;
-            line-height: 1.6;
-            padding: 20px;
-            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            background-color: #4a4a4a;
+            border: 4px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
         .title {
+            color: #fff;
             text-align: center;
-            padding: 20px;
-            background-color: #1e1b4b;
-            border: 4px solid #4338ca;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            text-shadow: 4px 4px 0px #000;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .title::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(253, 224, 71, 0.2) 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        .title div {
-            font-size: 14px;
-            margin-top: 10px;
-            color: #4ade80;
-            animation: pulse 2s infinite;
-        }
-
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .calculator-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .card {
-            background-color: #1e1b4b;
-            border: 4px solid #4338ca;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 8px 8px 0px #000;
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
-        .card-title {
-            color: #fde047;
-            font-size: 18px;
+            font-size: 24px;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 0px #000;
+            text-shadow: 2px 2px #000;
         }
-
         .input-group {
-            background-color: #312e81;
-            border: 2px solid #4338ca;
-            padding: 15px;
             margin-bottom: 15px;
-            border-radius: 4px;
-            position: relative;
         }
-
-        .input-group::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border: 2px dashed rgba(67, 56, 202, 0.5);
-            border-radius: 4px;
-            pointer-events: none;
-            animation: dash 5s linear infinite;
-        }
-
-        @keyframes dash {
-            to { stroke-dashoffset: 1000; }
-        }
-
-        .input-label {
+        .input-group label {
+            color: #fff;
             display: block;
-            color: #4ade80;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-
-        .range-input {
-            width: 100%;
-            height: 20px;
-            background: #4338ca;
-            outline: none;
-            -webkit-appearance: none;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-
-        .range-input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            background: #4ade80;
-            border: 2px solid #166534;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: background 0.3s;
-        }
-
-        .range-input::-webkit-slider-thumb:hover {
-            background: #a3e635;
-        }
-
-        .result-box {
-            background-color: #312e81;
-            border: 2px solid #4338ca;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-box::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(67, 56, 202, 0.2) 70%);
-            animation: rotate 15s linear infinite reverse;
-        }
-
-        .result-label {
-            color: #4ade80;
-            font-size: 12px;
             margin-bottom: 5px;
         }
-
-        .result-value {
-            color: #fde047;
-            font-size: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .result-value.animate {
-            animation: highlight 0.5s ease-in-out;
-        }
-
-        @keyframes highlight {
-            0% { background-color: transparent; }
-            50% { background-color: rgba(253, 224, 71, 0.5); }
-            100% { background-color: transparent; }
-        }
-
-        #chartContainer {
+        .input-group input {
             width: 100%;
-            height: 300px;
-            background-color: #312e81;
-            border: 2px solid #4338ca;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
+            padding: 10px;
+            border: 2px solid #000;
+            background-color: #7a7a7a;
+            color: #fff;
+            border-radius: 5px;
         }
-
-        #chartContainer::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(74, 222, 128, 0.1) 70%);
-            animation: rotate 25s linear infinite;
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
-            position: relative;
-            z-index: 1;
+        .category {
+            display: flex;
+            align-items: center;
+            background-color: #5a5a5a;
+            padding: 10px;
+            border-radius: 5px;
         }
-
-        .coin-icon {
+        .category-icon {
             font-size: 24px;
             margin-right: 10px;
-            animation: spin 4s linear infinite;
-            display: inline-block;
         }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .category-name {
+            flex-grow: 1;
+            color: #fff;
+        }
+        .category-input {
+            width: 80px;
+            padding: 5px;
+            background-color: #6a6a6a;
+            border: 2px solid #000;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .distribute-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #3a7ca5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: background-color 0.3s;
+        }
+        .distribute-btn:hover {
+            background-color: #2a6a95;
+        }
+        .remaining {
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+        }
+        .error {
+            color: #ff6b6b;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-
+        <h1 class="title">Simulador de Orçamento</h1>
         
-            
-            CALCULADORA DE GASTOS
-            <div><a href="./calc.html" style="color: white; text-decoration: none;">
-                ✨ CLICK AQUI ✨
-            </a>
+        <div class="input-group">
+            <label>Valor Total do Orçamento</label>
+            <input type="number" id="totalBudget" placeholder="Digite seu orçamento">
+        </div>
+
+        <button class="distribute-btn" onclick="distributeEvenly()">Distribuir Igualmente</button>
+
+        <div class="categories">
+            <div class="category" data-name="Aluguel">
+                <span class="category-icon">🏠</span>
+                <span class="category-name">Aluguel</span>
+                <input type="number" class="category-input" data-category="Aluguel">
+            </div>
+            <div class="category" data-name="Carro">
+                <span class="category-icon">🚗</span>
+                <span class="category-name">Carro</span>
+                <input type="number" class="category-input" data-category="Carro">
+            </div>
+            <div class="category" data-name="Investimentos">
+                <span class="category-icon">💰</span>
+                <span class="category-name">Investimentos</span>
+                <input type="number" class="category-input" data-category="Investimentos">
+            </div>
+            <div class="category" data-name="Compras">
+                <span class="category-icon">🛒</span>
+                <span class="category-name">Compras</span>
+                <input type="number" class="category-input" data-category="Compras">
+            </div>
+
+            <div class="category" data-name="Compras">
+                <span class="category-icon">💧🛒</span>
+                <span class="category-name">Agua</span>
+                <input type="number" class="category-input" data-category="Compras">
+            </div>
+
+            <div class="category" data-name="Compras">
+                <span class="category-icon">💡</span>
+                <span class="category-name">Luz</span>
+                <input type="number" class="category-input" data-category="Compras">
+            </div>
+
+            <div class="category" data-name="Compras">
+                <span class="category-icon">🌐</span>
+                <span class="category-name">Internet</span>
+                <input type="number" class="category-input" data-category="Compras">
             </div>
             <br>
-        
-        <div class="title">
-            <span class="coin-icon">🎮</span>
-            CALCULADORA DE MOEDAS
-            <div>
-                ✨ SIMULE SUA FORTUNA ✨
-            </div>
         </div>
-         
-        <div class="calculator-grid">
-            <div class="card">
-                <h2 class="card-title">CONFIGURE SUA MISSÃO</h2>
-                
-                <div class="input-group">
-                    <label class="input-label">MOEDAS INICIAIS</label>
-                    <div id="principalValue">R$ 1.000,00</div>
-                    <input type="range" id="principal" class="range-input" 
-                           min="0" max="100000" step="1000" value="0">
-                </div>
 
-                <div class="input-group">
-                    <label class="input-label">MOEDAS MENSAIS</label>
-                    <div id="monthlyValue">R$ 100,00</div>
-                    <input type="range" id="monthly" class="range-input"
-                           min="0" max="10000" step="50" value="0">
-                </div>
-
-                <div class="input-group">
-                    <label class="input-label">PODER DE MULTIPLICAÇÃO</label>
-                    <div id="interestValue">6%</div>
-                    <input type="range" id="interest" class="range-input"
-                           min="0" max="20" step="0.5" value="6">
-                </div>
-
-                <div class="input-group">
-                    <label class="input-label">ANOS DE JORNADA</label>
-                    <div id="yearsValue">1 anos</div>
-                    <input type="range" id="years" class="range-input"
-                           min="1" max="100" step="1" value="1">
-                </div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-title">TESOURO ACUMULADO</h2>
-                
-                <div class="result-box">
-                    <div class="result-label">TESOURO FINAL</div>
-                    <div id="finalBalance" class="result-value">R$ 0,00</div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="result-box">
-                        <div class="result-label">MOEDAS INVESTIDAS</div>
-                        <div id="totalInvested" class="result-value">R$ 0,00</div>
-                    </div>
-
-                    <div class="result-box">
-                        <div class="result-label">BÔNUS MÁGICO</div>
-                        <div id="totalInterest" class="result-value">R$ 0,00</div>
-                    </div>
-                </div>
-
-                <div id="chartContainer">
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-        </div>
+        <div class="remaining" id="remainingBudget">Restante: R$ 0,00</div>
+        <div class="error" id="errorMessage"></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script>
-        let myChart = null;
+        function distributeEvenly() {
+            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            const categoryInputs = document.querySelectorAll('.category-input');
+            const errorMessage = document.getElementById('errorMessage');
+            const remainingBudget = document.getElementById('remainingBudget');
 
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(value);
-        }
-
-        function calculateResults() {
-            const principal = parseFloat(document.getElementById('principal').value);
-            const monthly = parseFloat(document.getElementById('monthly').value);
-            const interest = parseFloat(document.getElementById('interest').value);
-            const years = parseInt(document.getElementById('years').value);
-
-            let balance = principal;
-            const monthlyRate = interest / 12 / 100;
-            const totalMonths = years * 12;
-            const labels = [];
-            const balanceData = [];
-            const investedData = [];
-            let invested = principal;
-
-            for (let month = 0; month <= totalMonths; month++) {
-                if (month > 0) {
-                    balance = (balance + monthly) * (1 + monthlyRate);
-                    invested += monthly;
-                }
-                
-                if (month % 12 === 0) {
-                    labels.push(`Ano ${month/12}`);
-                    balanceData.push(Math.round(balance));
-                    investedData.push(Math.round(invested));
-                }
+            if (isNaN(totalBudget) || totalBudget <= 0) {
+                errorMessage.textContent = 'Digite um valor válido!';
+                return;
             }
 
-            // Atualizar resultados
-            document.getElementById('finalBalance').textContent = formatCurrency(balance);
-            document.getElementById('totalInvested').textContent = formatCurrency(invested);
-            document.getElementById('totalInterest').textContent = formatCurrency(balance - invested);
-
-            // Adicionar animação aos valores
-            const resultElements = document.querySelectorAll('.result-value');
-            resultElements.forEach(element => {
-                element.classList.remove('animate');
-                void element.offsetWidth; // Reflow para reiniciar a animação
-                element.classList.add('animate');
+            const equalValue = (totalBudget / categoryInputs.length).toFixed(2);
+            categoryInputs.forEach(input => {
+                input.value = equalValue;
             });
 
-            updateChart(labels, balanceData, investedData);
+            errorMessage.textContent = '';
+            remainingBudget.textContent = `Restante: R$ 0,00`;
+
+            calculateRemaining();
         }
 
-        function updateChart(labels, balanceData, investedData) {
-            const ctx = document.getElementById('myChart').getContext('2d');
+        function calculateRemaining() {
+            const totalBudget = parseFloat(document.getElementById('totalBudget').value);
+            const categoryInputs = document.querySelectorAll('.category-input');
+            const errorMessage = document.getElementById('errorMessage');
+            const remainingBudget = document.getElementById('remainingBudget');
 
-            if (myChart) {
-                myChart.destroy();
+            const totalAllocated = Array.from(categoryInputs)
+                .reduce((sum, input) => sum + parseFloat(input.value || 0), 0);
+
+            const remaining = totalBudget - totalAllocated;
+            remainingBudget.textContent = `Restante: R$ ${remaining.toFixed(2)}`;
+
+            if (remaining < 0) {
+                errorMessage.textContent = 'Orçamento excedido!';
+                remainingBudget.style.color = '#ff6b6b';
+            } else {
+                errorMessage.textContent = '';
+                remainingBudget.style.color = '#fff';
             }
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Tesouro Total',
-                            data: balanceData,
-                            borderColor: '#fde047',
-                            backgroundColor: 'rgba(253, 224, 71, 0.2)',
-                            borderWidth: 2,
-                            stepped: true
-                        },
-                        {
-                            label: 'Total Investido',
-                            data: investedData,
-                            borderColor: '#4ade80',
-                            backgroundColor: 'rgba(74, 222, 128, 0.2)',
-                            borderWidth: 2,
-                            stepped: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 1000,
-                        easing: 'easeOutBounce'
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: '#fde047',
-                                font: {
-                                    family: "'Press Start 2P', cursive",
-                                    size: 10
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                },
-                                color: '#fde047',
-                                font: {
-                                    family: "'Press Start 2P', cursive",
-                                    size: 8
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(67, 56, 202, 0.3)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#fde047',
-                                font: {
-                                    family: "'Press Start 2P', cursive",
-                                    size: 8
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(67, 56, 202, 0.3)'
-                            }
-                        }
-                    }
-                }
-            });
         }
 
-        // Atualizar valores exibidos
-        function updateDisplayValues() {
-            document.getElementById('principalValue').textContent = 
-                formatCurrency(document.getElementById('principal').value);
-            document.getElementById('monthlyValue').textContent = 
-                formatCurrency(document.getElementById('monthly').value);
-            document.getElementById('interestValue').textContent = 
-                document.getElementById('interest').value + '%';
-            document.getElementById('yearsValue').textContent = 
-                document.getElementById('years').value + ' anos';
-        }
-
-        // Event listeners
-        const inputs = ['principal', 'monthly', 'interest', 'years'];
-        inputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                updateDisplayValues();
-                calculateResults();
-            });
+        document.getElementById('totalBudget').addEventListener('input', calculateRemaining);
+        document.querySelectorAll('.category-input').forEach(input => {
+            input.addEventListener('input', calculateRemaining);
         });
-
-        // Inicializar calculadora
-        updateDisplayValues();
-        calculateResults();
     </script>
 </body>
 </html>
